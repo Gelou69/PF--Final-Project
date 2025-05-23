@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -26,61 +26,12 @@
       text-align: center;
     }
 
-    /* Container for each developer */
-    .developer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0 15px;
-    }
-
-    /* Row that holds all developers */
-    .developers-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 40px;
-      margin-bottom: 30px;
-      flex-wrap: nowrap;
-      max-width: 100%;
-    }
-
-    .meme-face {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid #00ffcc;
-      animation: faceWiggle 1.5s infinite alternate ease-in-out;
-      margin-bottom: 10px;
-    }
-
-    /* Name under face */
-    .dev-name {
-      font-size: 1rem;
-      color: #00ffcc;
-      text-shadow: 1px 1px #000;
-      white-space: nowrap;
-    }
-
-    @keyframes faceWiggle {
-      0% { transform: translateX(-10px) rotate(-5deg); }
-      50% { transform: translateX(10px) rotate(5deg); }
-      100% { transform: translateX(-10px) rotate(-5deg); }
-    }
-
     h1 {
       font-size: 3rem;
       color: #00ffcc;
       text-shadow: 2px 2px #000;
       animation: glitch 2s infinite;
       margin: 0 0 20px 0;
-    }
-
-    @keyframes glitch {
-      0% { text-shadow: 2px 2px #f00, -2px -2px #0ff; }
-      50% { text-shadow: -2px -2px #0ff, 2px 2px #f0f; }
-      100% { text-shadow: 2px 2px #0f0, -2px -2px #ff0; }
     }
 
     .play-button {
@@ -102,18 +53,66 @@
     }
 
     .creators {
-      margin-top: 50px;
-      font-size: 0.9rem;
-      opacity: 0.6;
-      animation: scrollCreators 20s linear infinite;
-      white-space: nowrap;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
-      width: 80%;
+      width: 100%;
+      padding: 30px 0;
+    }
+
+    .creator-group {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      animation: scrollCreators 20s linear infinite;
+    }
+
+    .developer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .meme-face {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #00ffcc;
+      animation: faceWiggle 1.5s infinite alternate ease-in-out;
+      margin-bottom: 10px;
+    }
+
+    .dev-name {
+      font-size: 1rem;
+      color: #00ffcc;
+      text-shadow: 1px 1px #000;
+      white-space: nowrap;
+    }
+
+    .dev-title-text {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-left: 20px;
+      white-space: nowrap;
     }
 
     @keyframes scrollCreators {
       from { transform: translateX(100%); }
       to { transform: translateX(-100%); }
+    }
+
+    @keyframes faceWiggle {
+      0% { transform: translateX(-10px) rotate(-5deg); }
+      50% { transform: translateX(10px) rotate(5deg); }
+      100% { transform: translateX(-10px) rotate(-5deg); }
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px #f00, -2px -2px #0ff; }
+      50% { text-shadow: -2px -2px #0ff, 2px 2px #f0f; }
+      100% { text-shadow: 2px 2px #0f0, -2px -2px #ff0; }
     }
 
     @keyframes fadeIn {
@@ -131,7 +130,13 @@
 </head>
 <body>
   <div class="welcome-container">
-    <div class="developers-row">
+    <h1>🎮 Welcome to Tetris Game 🎮</h1>
+    <button class="play-button" onclick="startGame()">Click to Play</button>
+  </div>
+
+  <!-- Faces + Scrolling Text Section -->
+  <div class="creators">
+    <div class="creator-group">
       <div class="developer">
         <img src="faces/carpio.png" alt="Carpio" class="meme-face" />
         <div class="dev-name">Carpio</div>
@@ -152,16 +157,11 @@
         <img src="faces/lato.png" alt="Lato" class="meme-face" />
         <div class="dev-name">Lato</div>
       </div>
-    </div>
-
-    <h1>🎮 Welcome to Tetris Game 🎮</h1>
-    <button class="play-button" onclick="startGame()">Click to Play</button>
-    <div class="creators">
-      Developed by Carpio, Balaba, Cabug, Agbonisa, and Lato
+      <div class="dev-title-text">Developed by Carpio, Balaba, Cabug, Agbonisa, and Lato</div>
     </div>
   </div>
 
-  
+  <!-- Audio and Background Effects -->
   <audio id="music1">
     <source src="audio/intro.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
@@ -176,11 +176,9 @@
 
   <script>
     function startGame() {
-      
       window.location.href = "index.html";
     }
 
-   
     const canvas = document.getElementById('bgCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -233,24 +231,19 @@
       init();
     });
 
-    
     const music1 = document.getElementById('music1');
     const music2 = document.getElementById('music2');
 
-    
     window.addEventListener('load', () => {
       music1.play().catch(() => {
-       
         console.warn("Autoplay blocked, will play on user interaction.");
       });
     });
 
-   
     music1.addEventListener('ended', () => {
       music2.play();
     });
 
-   
     window.addEventListener('click', () => {
       if (music1.paused && music2.paused) {
         music1.play();
