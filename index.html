@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Games</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header>
+            <h1 id="title">Carpio Games</h1>
+            <p id="expand">Click for more games.</p>
+            <p id="select">Select a game.</p>
+            <ul id="nav">
+                <li><a href="index.html" data-game="bounce" class="selected">HOME</a></li>
+                <li><a href="" data-game="snake">ABOUT</a></li>
+                <li><a href="" data-game="tetris">HELP</a></li>
+                <li><a href="" data-game="defender">CONTACT</a></li>
+                <li><a href="" data-game="pacman">NOFITICATION</a></li>
+                <li><a href="" data-game="puzzle">SETTINGS</a></li>
+                <li><a href="welcome.html" data-game="spider">LOGOUT</a></li>
+            </ul>
+        </header>
+        <iframe id="machine"></iframe>
+
+        <script>
+            function play(game) {
+                "use strict";
+                document.querySelector("#nav li a.selected").className = "";
+                document.querySelector(`#nav li a[data-game=${game}]`).className = "selected";
+                document.getElementById("title").innerHTML = game;
+                document.getElementById("machine").src = `${game}/index.html`;
+                document.title = "HTML5 Games: " + game.substring(0, 1).toUpperCase() + game.substring(1);
+            }
+
+            window.addEventListener("load", () => {
+                "use strict";
+                const header = document.querySelector("header");
+                play(location.hash.substring(1) || "bounce");
+                document.querySelector("#nav").addEventListener("click", (e) => {
+                    if (e.target.dataset.game) {
+                        play(e.target.dataset.game);
+                    }
+                });
+            }, false);
+        </script>
+    </body>
+</html>

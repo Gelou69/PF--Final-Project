@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Gameverse</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Press Start 2P', cursive;
+      background: linear-gradient(to bottom right, #0f0f0f, #1e1e1e);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .welcome-container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #00ffcc;
+      text-shadow: 2px 2px #000;
+      animation: glitch 2s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px #f00, -2px -2px #0ff; }
+      50% { text-shadow: -2px -2px #0ff, 2px 2px #f0f; }
+      100% { text-shadow: 2px 2px #0f0, -2px -2px #ff0; }
+    }
+
+    .play-button {
+      margin-top: 30px;
+      padding: 15px 40px;
+      font-size: 1rem;
+      background-color: #00ffcc;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 15px rgba(0,255,204,0.6);
+    }
+
+    .play-button:hover {
+      transform: scale(1.1);
+      background-color: #00ffaa;
+    }
+
+    .creators {
+      margin-top: 60px;
+      font-size: 0.9rem;
+      opacity: 0.6;
+      animation: scrollCreators 20s linear infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 80%;
+    }
+
+    @keyframes scrollCreators {
+      from { transform: translateX(100%); }
+      to { transform: translateX(-100%); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome-container">
+    <h1>🎮 Welcome to Tetris Game 🎮</h1>
+    <button class="play-button" onclick="startGame()">Click to Play</button>
+    <div class="creators">
+      Developed by Carpio, Balaba, Cabug, Agbonisa, and Lato
+    </div>
+  </div>
+
+  <canvas id="bgCanvas"></canvas>
+
+  <script>
+    function startGame() {
+  window.location.href = "game.html"; 
+}
+
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray = [];
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+      }
+      draw() {
+        ctx.fillStyle = '#00ffcc';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      particlesArray = [];
+      for (let i = 0; i < 100; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
+    });
+  </script>
+</body>
+</html>
