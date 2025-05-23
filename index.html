@@ -1,61 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Games</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <header>
-            <h1 id="title">Carpio Games</h1>
-            <p id="expand">MENU</p>
-            <p id="select"></p>
-            <ul id="nav">
-                <li><a href="index.html" data-game="bounce" class="selected">HOME</a></li>
-                <li><a href="" data-game="snake">ABOUT</a></li>
-                <li><a href="#tetris" data-game="tetris">PLAY</a></li>
-                <li><a href="" data-game="defender">CONTACT</a></li>
-                <li><a href="" data-game="pacman">NOFITICATION</a></li>
-                <li><a href="" data-game="puzzle">SETTINGS</a></li>
-                <li><a href="welcome.html" data-game="spider">LOGOUT</a></li>
-            </ul>
-        </header>
-        <iframe id="machine"></iframe>
-<audio id="music2" loop>
-  <source src="audio/background.mp3" type="audio/mpeg" />
-  Your browser does not support the audio element.
-</audio>
-        <script>
-            function play(game) {
-                "use strict";
-                document.querySelector("#nav li a.selected").className = "";
-                document.querySelector(`#nav li a[data-game=${game}]`).className = "selected";
-                document.getElementById("title").innerHTML = game;
-                document.getElementById("machine").src = `${game}/index.html`;
-                document.title = "HTML5 Games: " + game.substring(0, 1).toUpperCase() + game.substring(1);
-            }
+<head>
+    <meta charset="utf-8" />
+    <title>Games</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1 id="title">Carpio Games</h1>
+        <p id="expand">MENU</p>
+        <p id="select"></p>
+        <ul id="nav">
+            <li><a href="index.html" data-game="bounce" class="selected">HOME</a></li>
+            <li><a href="" data-game="snake">ABOUT</a></li>
+            <li><a href="#tetris" data-game="tetris">PLAY</a></li>
+            <li><a href="" data-game="defender">CONTACT</a></li>
+            <li><a href="" data-game="pacman">NOTIFICATION</a></li>
+            <li><a href="" data-game="puzzle">SETTINGS</a></li>
+            <li><a href="welcome.html" data-game="spider">LOGOUT</a></li>
+        </ul>
+    </header>
 
-           window.addEventListener("load", () => {
-    "use strict";
-    const header = document.querySelector("header");
-    play(location.hash.substring(1) || "tetris");
+    <iframe id="machine"></iframe>
 
-    document.querySelector("#nav").addEventListener("click", (e) => {
-        if (e.target.dataset.game) {
-            play(e.target.dataset.game);
+    <audio id="backgroundMusic" loop>
+        <source src="audio/background.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        function play(game) {
+            "use strict";
+            document.querySelector("#nav li a.selected").className = "";
+            document.querySelector(`#nav li a[data-game=${game}]`).className = "selected";
+            document.getElementById("title").innerHTML = game;
+            document.getElementById("machine").src = `${game}/index.html`;
+            document.title = "HTML5 Games: " + game.substring(0, 1).toUpperCase() + game.substring(1);
         }
-    });
 
-    
-    const music = document.getElementById("music2");
-    const startMusic = () => {
-        music.play().catch((error) => {
-            console.log("Autoplay prevented:", error);
-        });
-        document.removeEventListener("click", startMusic);
-    };
-    document.addEventListener("click", startMusic);
-}, false);
-        </script>
-    </body>
+        window.addEventListener("load", () => {
+            "use strict";
+            play(location.hash.substring(1) || "tetris");
+            document.querySelector("#nav").addEventListener("click", (e) => {
+                if (e.target.dataset.game) {
+                    play(e.target.dataset.game);
+                }
+            });
+
+            // Background music play setup
+            const music = document.getElementById("backgroundMusic");
+
+            const playMusic = () => {
+                music.play().catch(() => {});
+                document.removeEventListener("click", playMusic);
+            };
+
+            document.addEventListener("click", playMusic);
+        }, false);
+    </script>
+</body>
 </html>
