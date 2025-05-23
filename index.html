@@ -1,51 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Games</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <header>
-            <h1 id="title">Carpio Games</h1>
-            <p id="expand">MENU</p>
-            <p id="select"></p>
-            <ul id="nav">
-                <li><a href="index.html" data-game="bounce" class="selected">HOME</a></li>
-                <li><a href="" data-game="snake">ABOUT</a></li>
-                <li><a href="#tetris" data-game="tetris">PLAY</a></li>
-                <li><a href="" data-game="defender">CONTACT</a></li>
-                <li><a href="" data-game="pacman">NOFITICATION</a></li>
-                <li><a href="" data-game="puzzle">SETTINGS</a></li>
-                <li><a href="welcome.html" data-game="spider">LOGOUT</a></li>
-            </ul>
-        </header>
-        <iframe id="machine"></iframe>
-<audio id="music2">
-  <source src="audio/background.mp3" type="audio/mpeg" />
-  Your browser does not support the audio element.
-</audio>
+<head>
+    <meta charset="utf-8" />
+    <title>Games</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1 id="title">Carpio Games</h1>
+        <p id="expand">MENU</p>
+        <p id="select"></p>
+        <ul id="nav">
+            <li><a href="index.html" data-game="bounce" class="selected">HOME</a></li>
+            <li><a href="" data-game="snake">ABOUT</a></li>
+            <li><a href="#tetris" data-game="tetris">PLAY</a></li>
+            <li><a href="" data-game="defender">CONTACT</a></li>
+            <li><a href="" data-game="pacman">NOFITICATION</a></li>
+            <li><a href="" data-game="puzzle">SETTINGS</a></li>
+            <li><a href="welcome.html" data-game="spider">LOGOUT</a></li>
+        </ul>
+    </header>
 
-        <script>
-            function play(game) {
-                "use strict";
-                document.querySelector("#nav li a.selected").className = "";
-                document.querySelector(`#nav li a[data-game=${game}]`).className = "selected";
-                document.getElementById("title").innerHTML = game;
-                document.getElementById("machine").src = `${game}/index.html`;
-                document.title = "HTML5 Games: " + game.substring(0, 1).toUpperCase() + game.substring(1);
+    <iframe id="machine"></iframe>
+
+    <!-- Background music -->
+    <audio id="music2" autoplay loop>
+        <source src="audio/background.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        function play(game) {
+            "use strict";
+            document.querySelector("#nav li a.selected").classList.remove("selected");
+            const gameLink = document.querySelector(`#nav li a[data-game="${game}"]`);
+            if (gameLink) gameLink.classList.add("selected");
+
+            document.getElementById("title").innerText = game;
+            document.getElementById("machine").src = `${game}/index.html`;
+            document.title = "HTML5 Games: " + game.charAt(0).toUpperCase() + game.slice(1);
+        }
+
+        window.addEventListener("load", () => {
+            "use strict";
+
+            // Load initial game
+            const initialGame = location.hash.substring(1) || "tetris";
+            play(initialGame);
+
+            // Handle navigation clicks
+            document.querySelector("#nav").addEventListener("click", (e) => {
+                if (e.target.dataset.game) {
+                    e.preventDefault(); // Prevent default anchor behavior
+                    play(e.target.dataset.game);
+                }
+            });
+
+            // Play background music on first user interaction
+            const music = document.getElementById("music2");
+
+            function initAudioPlayback() {
+                music.play().catch(err => {
+                    console.log("Autoplay failed:", err);
+                });
+                document.removeEventListener("click", initAudioPlayback);
             }
 
-            window.addEventListener("load", () => {
-                "use strict";
-                const header = document.querySelector("header");
-                play(location.hash.substring(1) || "tetris");
-                document.querySelector("#nav").addEventListener("click", (e) => {
-                    if (e.target.dataset.game) {
-                        play(e.target.dataset.game);
-                    }
-                });
-            }, false);
-        </script>
-    </body>
+            document.addEventListener("click", initAudioPlayback);
+        });
+    </script>
+</body>
 </html>
